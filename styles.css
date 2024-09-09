@@ -12,8 +12,7 @@ body {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto; 
-  }
-  
+  } 
 
 .grid-item {
     background-color: rgba(255, 255, 255, 0.8);
@@ -25,4 +24,24 @@ body {
 img {
     max-width: 100%;
     height: auto;
+}
+
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 10px;
+}
+
+label {
+  margin-right: 10px;
+  margin-left: 50px;
+  font-weight: bold;
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
 }
