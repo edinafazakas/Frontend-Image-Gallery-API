@@ -18,10 +18,10 @@ function createGridItem(image, container) {
 }
 
 function populateDropdown(images, dropdown) {
-    const authors = ['All Authors', ...new Set(images.map(img => img.author))];
+    const authors = ['Authors', ...new Set(images.map(img => img.author))];
     authors.forEach(author => {
         const option = document.createElement('option');
-        option.value = author === 'All Authors' ? 'all' : author;
+        option.value = author === 'Authors' ? 'all' : author;
         option.text = author;
         dropdown.appendChild(option);
     });
