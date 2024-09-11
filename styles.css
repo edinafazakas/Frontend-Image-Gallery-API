@@ -8,7 +8,7 @@ body {
   .grid-container {
     display: grid;
     gap: 20px; 
-    grid-template-columns: repeat(3, 1fr); 
+     grid-template-columns: repeat(3, 1fr);  /*creates three equal-width columns that can adjust based on the container's width */
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto; 
