@@ -1,37 +1,56 @@
-async function fetchImagesJSON() {
+async function fetchImages() {
     const response = await fetch('https://picsum.photos/v2/list');
-    const images = await response.json();
-    return images;
+    return await response.json();
 }
 
-fetchImagesJSON().then(images => {
-    const imageGrid = document.getElementById('imageGrid');
-    images.forEach(image => {
-        console.log(image)
-        const gridItem = document.createElement('div');
-        gridItem.className = 'grid-item';
-        gridItem.innerHTML = `
-            <img src="${image.download_url}" alt="${image.author}">
-            <h2>${image.author}</h2>
-            <p>Width: ${image.width}</p>
-            <p>Height: ${image.height}</p>
-            <a href="${image.url}">View URL</a>
-        `;
-        imageGrid.appendChild(gridItem);
+function createGridItem(image, container) {
+    const item = document.createElement('div');
+    item.className = 'grid-item';
+    item.dataset.author = image.author;
+    item.innerHTML = `
+        <img src="${image.download_url}" alt="${image.author}">
+        <h2>${image.author}</h2>
+        <p>Width: ${image.width}</p>
+        <p>Height: ${image.height}</p>
+        <a href="${image.url}">View URL</a>
+    `;
+    container.appendChild(item);
+}
 
+function populateDropdown(images, dropdown) {
+    const authors = ['All Authors', ...new Set(images.map(img => img.author))];
+    authors.forEach(author => {
         const option = document.createElement('option');
-        option.value = image.download_url;
-        option.text = image.author;
-        imageDropdown.appendChild(option);
+        option.value = author === 'All Authors' ? 'all' : author;
+        option.text = author;
+        dropdown.appendChild(option);
     });
+}
 
-    imageDropdown.addEventListener('change', function() {
-        const selectedImage = this.value;
-        const gridItems = document.querySelectorAll('.grid-item img');
-        gridItems.forEach(img => {
-            if (img.src === selectedImage) {
-                img.parentElement.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
+function filterGrid(author) {
+    const gridItems = document.querySelectorAll('.grid-item');
+    
+    gridItems.forEach(function(item) {
+        if (author === 'all' || item.dataset.author === author) {
+            item.style.display = 'block'; //show the item
+        } else {
+            item.style.display = 'none'; //hide it
+        }
     });
-});
+}
+
+function setupDropdownFilter(dropdown) {
+    dropdown.addEventListener('change', () => filterGrid(dropdown.value));
+}
+
+async function initializeGallery() {
+    const imageGrid = document.getElementById('imageGrid');
+    const imageDropdown = document.getElementById('imageDropdown');
+    
+    const images = await fetchImages();
+    images.forEach(image => createGridItem(image, imageGrid));
+    populateDropdown(images, imageDropdown);
+    setupDropdownFilter(imageDropdown);
+}
+
+initializeGallery();
