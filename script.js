@@ -14,14 +14,16 @@ function createGridItem(image, container) {
         <p>Height: ${image.height}</p>
         <a href="${image.url}">View URL</a>
     `;
+    console.log(image)
     container.appendChild(item);
 }
 
 function populateDropdown(images, dropdown) {
-    const authors = ['Authors', ...new Set(images.map(img => img.author))];
+    const authors = new Set(images.map(img => img.author));
+    
     authors.forEach(author => {
         const option = document.createElement('option');
-        option.value = author === 'Authors' ? 'all' : author;
+        option.value = author;
         option.text = author;
         dropdown.appendChild(option);
     });
@@ -31,7 +33,7 @@ function filterGrid(author) {
     const gridItems = document.querySelectorAll('.grid-item');
     
     gridItems.forEach(function(item) {
-        if (author === 'all' || item.dataset.author === author) {
+        if (item.dataset.author === author) {
             item.style.display = 'block'; //show the item
         } else {
             item.style.display = 'none'; //hide it
